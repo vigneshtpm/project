@@ -1,59 +1,60 @@
-
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'dart:async';
 import 'package:just_audio/just_audio.dart';
-import 'package:project/notificationcontroller.dart';
 
 
-const int kWorkDurationInSeconds = 20 * 60;
-const int kRestDurationInSeconds = 20;
+class UserFunc extends StatefulWidget {
+  final int workTime;
+  final int breakTime;
 
-class Page1 extends StatefulWidget {
+  UserFunc({required this.workTime, required this.breakTime});
+
   @override
-  _Page1State createState() => _Page1State();
+  _UserFuncState createState() => _UserFuncState();
 }
 
-class _Page1State extends State<Page1> {
-
+class _UserFuncState extends State<UserFunc> {
+  late int convertedWorkTime;
+  late int convertedBreakTime;
   double percent = 0.0;
   bool isRunning = false;
   int elapsedTime = 0;
   Timer? timer;
   AudioPlayer audioPlayer = AudioPlayer();
-  bool isWorkPhase = false;
 
   @override
-  void initState(){
-    AwesomeNotifications().setListeners(
-      onActionReceivedMethod:
-      NotificationController.onActionReceivedMethod,
-      onNotificationDisplayedMethod:
-      NotificationController.onNotificationDisplayedMethod,
-      onDismissActionReceivedMethod:
-      NotificationController.onDismissActionReceivedMethod,
-      onNotificationCreatedMethod:
-      NotificationController.onNotificationCreatedMethod,
-    );
-    isWorkPhase = elapsedTime <= kWorkDurationInSeconds;
+  void initState() {
     super.initState();
+    // Convert workTime and breakTime to seconds
+    convertedWorkTime = widget.workTime * 60;
+    convertedBreakTime = widget.breakTime * 60;
   }
 
   @override
   Widget build(BuildContext context) {
+    bool isWorkPhase = elapsedTime <= convertedWorkTime;
     return Scaffold(
       backgroundColor: Colors.blueAccent,
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            // Add logic to navigate back when the back arrow is pressed
+            Navigator.pop(context);
+          },
+        ),
         title: const Text(
-          '20-20-20',
+          'Running...',
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
         backgroundColor: Colors.blueAccent,
         toolbarHeight: 110.0,
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -74,14 +75,11 @@ class _Page1State extends State<Page1> {
               percent: percent,
               center: Text(
                 formatTime(
-                    elapsedTime < kWorkDurationInSeconds
-                        ? kWorkDurationInSeconds - elapsedTime
-                        : kRestDurationInSeconds - (elapsedTime - kWorkDurationInSeconds)),
+                  isWorkPhase
+                      ? convertedWorkTime - elapsedTime
+                      : convertedBreakTime - (elapsedTime - convertedWorkTime),
+                ),
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 38.0),
-              ),
-              footer: const Text(
-                "",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
               ),
               circularStrokeCap: CircularStrokeCap.round,
               backgroundColor: Colors.white,
@@ -135,27 +133,28 @@ class _Page1State extends State<Page1> {
       ),
     );
   }
+
   void startTimer() {
     if (!isRunning) {
       timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
         setState(() {
-          if (elapsedTime <= kWorkDurationInSeconds) {
+          if (elapsedTime <= convertedWorkTime) {
             // Work cycle
-            percent = elapsedTime / kWorkDurationInSeconds;
-            if( elapsedTime == kWorkDurationInSeconds)
+            percent = elapsedTime / convertedWorkTime;
+            if( elapsedTime == convertedBreakTime)
             {
               playSound();
             }
             if (elapsedTime==1){
               showNotification("Start Work", "Enjoy Your Life");
             }
-            else if (elapsedTime == 59) {
+            else if (elapsedTime == convertedWorkTime-1) {
               showNotification("Stop Work", "Enjoy Your Break Time");
             }
-          } else if (elapsedTime <= kWorkDurationInSeconds + kRestDurationInSeconds) {
+          } else if (elapsedTime <= convertedBreakTime + convertedBreakTime) {
             // Rest cycle
-            percent = (elapsedTime - kWorkDurationInSeconds) / kRestDurationInSeconds;
-            if (elapsedTime == kWorkDurationInSeconds+kRestDurationInSeconds){
+            percent = (elapsedTime - convertedWorkTime) / convertedBreakTime;
+            if (elapsedTime == convertedWorkTime+convertedBreakTime){
               playSound();
             }
           } else {
@@ -164,7 +163,6 @@ class _Page1State extends State<Page1> {
             startTimer();
           }
           elapsedTime++;
-          isWorkPhase = elapsedTime <= kWorkDurationInSeconds;
         });
       });
       isRunning = true;

@@ -25,8 +25,8 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: CurvedNavigationBar(
         key: _bottomNavigationKey,
         items: <Widget>[
-          Icon(Icons.home, size: 30),
-          Icon(Icons.alarm, size: 30),
+          Icon(Icons.timer, size: 30),
+          Icon(Icons.more_time, size: 30),
           Icon(Icons.settings, size: 30),
         ],
         onTap: (index) {
@@ -39,5 +39,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-
