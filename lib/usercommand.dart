@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'dart:async';
 import 'package:just_audio/just_audio.dart';
-
+import 'Notification_service.dart';
 
 class UserFunc extends StatefulWidget {
   final int workTime;
@@ -16,6 +15,7 @@ class UserFunc extends StatefulWidget {
 }
 
 class _UserFuncState extends State<UserFunc> {
+  final NotificationService notificationService = NotificationService();
   late int convertedWorkTime;
   late int convertedBreakTime;
   double percent = 0.0;
@@ -27,6 +27,7 @@ class _UserFuncState extends State<UserFunc> {
   @override
   void initState() {
     super.initState();
+    notificationService.initNotification();
     // Convert workTime and breakTime to seconds
     convertedWorkTime = widget.workTime * 60;
     convertedBreakTime = widget.breakTime * 60;
@@ -133,6 +134,9 @@ class _UserFuncState extends State<UserFunc> {
       ),
     );
   }
+  void showNotification(String title, String body) {
+    notificationService.showNotification(title: title, body: body);
+  }
 
   void startTimer() {
     if (!isRunning) {
@@ -187,17 +191,6 @@ class _UserFuncState extends State<UserFunc> {
         elapsedTime = 0;
       });
     }
-  }
-  void showNotification(String title,String body) async{
-    AwesomeNotifications().createNotification(
-      content: NotificationContent(
-        id: 1,
-        channelKey: "Eyes_20",
-        title: title,
-        body: body,
-
-      ),
-    );
   }
 
   void playSound() async {

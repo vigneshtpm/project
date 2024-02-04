@@ -1,33 +1,45 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-class NotificationService{
+class NotificationService {
+  final FlutterLocalNotificationsPlugin notificationsPlugin =
+  FlutterLocalNotificationsPlugin();
 
-  final FlutterLocalNotificationsPlugin notificationsPlugin=
-      FlutterLocalNotificationsPlugin();
+  Future<void> initNotification() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('eye_logo');
 
-  Future<void> initNotification() async{
+    final InitializationSettings initializationSettings =
+    InitializationSettings(android: initializationSettingsAndroid);
 
-    AndroidInitializationSettings initializationSettingsAndroid =
-        const AndroidInitializationSettings('eye_logo');
-
-    var initializationSettings= InitializationSettings(
-      android: initializationSettingsAndroid,);
-    await notificationsPlugin.initialize(initializationSettings,
-        onDidReceiveNotificationResponse:
-    (NotificationResponse notificationResponse) async{});
-
-  }
-
-  notificationDetails(){
-    return const NotificationDetails(
-      android: AndroidNotificationDetails('channelId', 'channelName',
-      importance: Importance.max),
+    await notificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (payload) async {
+        // Handle the tap on the notification (optional)
+      },
     );
+
   }
 
-  Future showNotification(
-      {int id=0, String? title, String? body, String? payload}) async{
-    return notificationsPlugin.show(
-      id, title, body, await notificationDetails());
+  Future<void> showNotification(
+      {int id = 0, String? title, String? body, String? payload}) async {
+    final AndroidNotificationDetails androidPlatformChannelSpecifics =
+    AndroidNotificationDetails(
+      'Eye 20',
+      'display notification',
+      importance: Importance.max,
+      priority: Priority.high,
+      visibility: NotificationVisibility.public,
+    );
+
+    NotificationDetails platformChannelSpecifics =
+    NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    await notificationsPlugin.show(
+      id,
+      title,
+      body,
+      platformChannelSpecifics,
+      payload: payload,
+    );
   }
 }

@@ -1,22 +1,24 @@
 
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'dart:async';
 import 'package:just_audio/just_audio.dart';
-import 'package:project/notificationcontroller.dart';
+import 'Notification_service.dart';
 
 
-const int kWorkDurationInSeconds = 20 * 60;
+
+const int kWorkDurationInSeconds = 20;
 const int kRestDurationInSeconds = 20;
 
 class Page1 extends StatefulWidget {
   @override
   _Page1State createState() => _Page1State();
+
 }
 
 class _Page1State extends State<Page1> {
 
+  final NotificationService notificationService = NotificationService();
   double percent = 0.0;
   bool isRunning = false;
   int elapsedTime = 0;
@@ -26,16 +28,7 @@ class _Page1State extends State<Page1> {
 
   @override
   void initState(){
-    AwesomeNotifications().setListeners(
-      onActionReceivedMethod:
-      NotificationController.onActionReceivedMethod,
-      onNotificationDisplayedMethod:
-      NotificationController.onNotificationDisplayedMethod,
-      onDismissActionReceivedMethod:
-      NotificationController.onDismissActionReceivedMethod,
-      onNotificationCreatedMethod:
-      NotificationController.onNotificationCreatedMethod,
-    );
+    notificationService.initNotification();
     isWorkPhase = elapsedTime <= kWorkDurationInSeconds;
     super.initState();
   }
@@ -135,6 +128,9 @@ class _Page1State extends State<Page1> {
       ),
     );
   }
+  void showNotification(String title, String body) {
+    notificationService.showNotification(title: title, body: body);
+  }
   void startTimer() {
     if (!isRunning) {
       timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
@@ -190,17 +186,7 @@ class _Page1State extends State<Page1> {
       });
     }
   }
-  void showNotification(String title,String body) async{
-    AwesomeNotifications().createNotification(
-      content: NotificationContent(
-        id: 1,
-        channelKey: "Eyes_20",
-        title: title,
-        body: body,
 
-      ),
-    );
-  }
 
   void playSound() async {
     await audioPlayer.setAsset('assets/audio/sample1.mp3');
