@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'usercommand.dart';
 
 class Page2 extends StatefulWidget {
@@ -8,8 +7,34 @@ class Page2 extends StatefulWidget {
 }
 
 class _Page2State extends State<Page2> {
-  TextEditingController inputBox1Controller = TextEditingController();
-  TextEditingController inputBox2Controller = TextEditingController();
+  int selectedWorkTimeInMinutes = 0;
+  int selectedBreakTimeInMinutes = 0;
+
+  Future<void> _selectWorkTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: selectedWorkTimeInMinutes ~/ 60, minute: selectedWorkTimeInMinutes % 60),
+    );
+
+    if (picked != null) {
+      setState(() {
+        selectedWorkTimeInMinutes = picked.hour * 60 + picked.minute;
+      });
+    }
+  }
+
+  Future<void> _selectBreakTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: selectedBreakTimeInMinutes ~/ 60, minute: selectedBreakTimeInMinutes % 60),
+    );
+
+    if (picked != null) {
+      setState(() {
+        selectedBreakTimeInMinutes = picked.hour * 60 + picked.minute;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,91 +55,99 @@ class _Page2State extends State<Page2> {
           children: [
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: TextField(
-                controller: inputBox1Controller,
-                decoration: InputDecoration(
-                  labelText: 'Enter Working Time (mins)',
-                  labelStyle: TextStyle(color: Colors.white),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(width: 2, color: Colors.white),
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(30.0),
+              child: InkWell(
+                onTap: () => _selectWorkTime(context),
+                child: InputDecorator(
+                  decoration: InputDecoration(
+                    labelText: 'Select Working Time',
+                    labelStyle: TextStyle(color: Colors.white),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(width: 2, color: Colors.white),
+                      borderRadius: const BorderRadius.all(
+                        const Radius.circular(30.0),
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(width: 2, color: Colors.white38),
+                      borderRadius: const BorderRadius.all(
+                        const Radius.circular(30.0),
+                      ),
                     ),
                   ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(width: 2, color: Colors.white38),
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(30.0),
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text(
+                        "$selectedWorkTimeInMinutes minutes",
+                        style: TextStyle(fontSize: 17.0, color: Colors.white),
+                      ),
+                    ],
                   ),
                 ),
-                keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly,
-                LengthLimitingTextInputFormatter(3),
-                ],
-                cursorColor: Colors.white,
-                style: TextStyle(fontSize: 17.0, color: Colors.white),
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: TextField(
-                controller: inputBox2Controller,
-                decoration: InputDecoration(
-                  labelText: 'Enter Break Time (mins)',
-                  labelStyle: TextStyle(color: Colors.white),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(width: 2, color: Colors.white),
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(30.0),
+              child: InkWell(
+                onTap: () => _selectBreakTime(context),
+                child: InputDecorator(
+                  decoration: InputDecoration(
+                    labelText: 'Select Break Time',
+                    labelStyle: TextStyle(color: Colors.white),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(width: 2, color: Colors.white),
+                      borderRadius: const BorderRadius.all(
+                        const Radius.circular(30.0),
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(width: 2, color: Colors.white38),
+                      borderRadius: const BorderRadius.all(
+                        const Radius.circular(30.0),
+                      ),
                     ),
                   ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(width: 2, color: Colors.white38),
-                    borderRadius: const BorderRadius.all(
-                      const Radius.circular(30.0),
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text(
+                        "$selectedBreakTimeInMinutes minutes",
+                        style: TextStyle(fontSize: 17.0, color: Colors.white),
+                      ),
+                    ],
                   ),
                 ),
-                keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(2),
-                ],
-                cursorColor: Colors.white,
-                style: TextStyle(fontSize: 17.0, color: Colors.white),
               ),
             ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Parse input values to integers
-                int parsedInput1 = int.tryParse(inputBox1Controller.text) ?? 0;
-                int parsedInput2 = int.tryParse(inputBox2Controller.text) ?? 0;
-
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => UserFunc(
-                      workTime: parsedInput1,
-                      breakTime: parsedInput2,
+                      workTime: selectedWorkTimeInMinutes,
+                      breakTime: selectedBreakTimeInMinutes,
                     ),
                   ),
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.greenAccent, // Background color
-                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 34), // Increase button size
+                backgroundColor: Colors.greenAccent,
+                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 34),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0), // Add border radius
-                  side: BorderSide(color: Colors.white, width: 1), // Add border color and width
+                  borderRadius: BorderRadius.circular(30.0),
+                  side: BorderSide(color: Colors.white, width: 1),
                 ),
                 elevation: 5,
               ),
-              child: const Text("Next",
+              child: const Text(
+                "Next",
                 style: TextStyle(
-                    color: Colors.black,
-                fontSize: 17,
+                  color: Colors.black,
+                  fontSize: 17,
                 ),
               ),
             ),

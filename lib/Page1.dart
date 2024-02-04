@@ -7,7 +7,7 @@ import 'Notification_service.dart';
 
 
 
-const int kWorkDurationInSeconds = 20;
+const int kWorkDurationInSeconds = 20*60;
 const int kRestDurationInSeconds = 20;
 
 class Page1 extends StatefulWidget {
