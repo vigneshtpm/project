@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:project/Notification_service.dart';
+import 'about.dart';
+import 'terms.dart';
+import 'help.dart';
 
 
 class Page3 extends StatefulWidget {
@@ -7,8 +11,26 @@ class Page3 extends StatefulWidget {
 }
 
 class _Page3State extends State<Page3> {
-  bool notificationsEnabled = true;
+  bool notificationsEnabled = false;
   bool darkModeEnabled = false;
+  NotificationService notificationService = NotificationService();
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize notifications when the widget is created
+    notificationService.initNotification();
+  }
+  Future<void> handleNotificationsSwitch(bool value) async {
+    // Request notification permission
+    await notificationService.requestNotificationPermission();
+
+    setState(() {
+      notificationsEnabled = value;
+    });
+
+    // Add logic to handle enabling/disabling notifications
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,10 +69,7 @@ class _Page3State extends State<Page3> {
               trailing: Switch(
                 value: notificationsEnabled,
                 onChanged: (value) {
-                  setState(() {
-                    notificationsEnabled = value;
-                  });
-                  // Add logic to handle enabling/disabling notifications
+                  handleNotificationsSwitch(value);// Add logic to handle enabling/disabling notifications
                 },
                 activeTrackColor: Colors.grey,
                 activeColor: Colors.white,
@@ -80,7 +99,7 @@ class _Page3State extends State<Page3> {
             ),
             ListTile(
               title: Text(
-                'Additional Settings',
+                'More',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20.0,
@@ -97,12 +116,14 @@ class _Page3State extends State<Page3> {
                     style: TextStyle(color: Colors.white),
                   ),
                   Spacer(),
-                  Icon(Icons.arrow_forward, color: Colors.white),
+
                 ],
               ),
               onTap: () {
-                // Navigate to About Us page
-                // You can use Navigator.push to navigate to the desired page
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context)=> AboutUsPage()));
               },
             ),
             ListTile(
@@ -113,12 +134,12 @@ class _Page3State extends State<Page3> {
                     style: TextStyle(color: Colors.white),
                   ),
                   Spacer(),
-                  Icon(Icons.arrow_forward, color: Colors.white),
+
                 ],
               ),
               onTap: () {
-                // Navigate to Terms and Conditions page
-                // You can use Navigator.push to navigate to the desired page
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> Terms()));
+
               },
             ),
             Divider(
@@ -137,27 +158,59 @@ class _Page3State extends State<Page3> {
                 ],
               ),
               onTap: () {
-                // Add logic to handle the Help action
-                // For example, show a help dialog or navigate to a help page
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context)=> Help()));
               },
             ),
 
             // Feedback ListTile with an icon
-            ListTile(
-              title: Row(
-                children: [
-                  Icon(Icons.feedback, color: Colors.white), // Feedback icon
-                  SizedBox(width: 16.0),
-                  Text(
-                    'Feedback',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ],
+            ExpansionTile(
+              title: Container(
+                decoration: BoxDecoration(
+
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.feedback, color: Colors.white), // Feedback icon
+                    SizedBox(width: 16.0),
+                    Text(
+                      'Feedback',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ),
               ),
-              onTap: () {
-                // Add logic to handle the Feedback action
-                // For example, show a feedback form or navigate to a feedback page
-              },
+              trailing: Icon(
+                Icons.keyboard_arrow_down, // You can use a different arrow icon if needed
+                color: Colors.blueAccent, // Set the arrow color to white
+              ),
+              backgroundColor: Colors.blueAccent, // Set the background color when the ExpansionTile is activated
+              children: [
+                // Add your feedback information here
+                Container(
+
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Row(
+                          children: [
+                            Icon(Icons.email, color: Colors.white), // Email icon
+                            SizedBox(width: 16.0),
+                            Text(
+                              'vigneshwaranrk2@gmail.com',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ],
         ),

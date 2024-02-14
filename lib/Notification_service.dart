@@ -1,4 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class NotificationService {
   final FlutterLocalNotificationsPlugin notificationsPlugin =
@@ -17,11 +18,14 @@ class NotificationService {
         // Handle the tap on the notification (optional)
       },
     );
-
   }
 
-  Future<void> showNotification(
-      {int id = 0, String? title, String? body, String? payload}) async {
+  Future<void> showNotification({
+    int id = 0,
+    String? title,
+    String? body,
+    String? payload,
+  }) async {
     final AndroidNotificationDetails androidPlatformChannelSpecifics =
     AndroidNotificationDetails(
       'Eye 20',
@@ -41,5 +45,18 @@ class NotificationService {
       platformChannelSpecifics,
       payload: payload,
     );
+  }
+
+  Future<void> requestNotificationPermission() async {
+    var status = await Permission.notification.status;
+
+    if (!status.isGranted) {
+      // The permission is not granted, request it.
+      status = await Permission.notification.request();
+
+      if (status.isGranted) {
+        // Permission granted, you can now handle notifications
+      }
+    }
   }
 }
