@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'usercommand.dart';
 
 class Page2 extends StatefulWidget {
@@ -79,7 +80,7 @@ class _Page2State extends State<Page2> {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       Text(
-                        "$selectedWorkTimeInMinutes minutes",
+                        "${selectedWorkTimeInMinutes ~/ 60} hours ${selectedWorkTimeInMinutes % 60} minutes",
                         style: TextStyle(fontSize: 17.0, color: Colors.white),
                       ),
                     ],
@@ -113,7 +114,7 @@ class _Page2State extends State<Page2> {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       Text(
-                        "$selectedBreakTimeInMinutes minutes",
+                        "${selectedBreakTimeInMinutes ~/ 60} hours ${selectedBreakTimeInMinutes % 60} minutes",
                         style: TextStyle(fontSize: 17.0, color: Colors.white),
                       ),
                     ],
@@ -124,6 +125,7 @@ class _Page2State extends State<Page2> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
+                HapticFeedback.lightImpact();
                 Navigator.push(
                   context,
                   MaterialPageRoute(

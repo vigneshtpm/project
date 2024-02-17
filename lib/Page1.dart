@@ -1,10 +1,10 @@
-
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'dart:async';
 import 'package:just_audio/just_audio.dart';
 import 'Notification_service.dart';
-
 
 
 const int kWorkDurationInSeconds = 20*60;
@@ -25,12 +25,20 @@ class _Page1State extends State<Page1> {
   Timer? timer;
   AudioPlayer audioPlayer = AudioPlayer();
   bool isWorkPhase = false;
+  var foregroundTask = FlutterForegroundTask();
+  bool isForegroundTaskRunning = false;
+  static const taskId = 'timer_task';
 
   @override
   void initState(){
     notificationService.initNotification();
     isWorkPhase = elapsedTime <= kWorkDurationInSeconds;
     super.initState();
+    Permission.microphone.status.then((status) {
+      if (status != PermissionStatus.granted) {
+        Permission.microphone.request();
+      }
+    });
   }
 
   @override
@@ -145,7 +153,7 @@ class _Page1State extends State<Page1> {
             if (elapsedTime==1){
               showNotification("Start Work", "Enjoy Your Life");
             }
-            else if (elapsedTime == 59) {
+            else if (elapsedTime == kWorkDurationInSeconds-1) {
               showNotification("Stop Work", "Enjoy Your Break Time");
             }
           } else if (elapsedTime <= kWorkDurationInSeconds + kRestDurationInSeconds) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'Page1.dart';
 import 'Page2.dart';
 import 'Page3.dart';
@@ -15,6 +16,8 @@ class HomePage extends StatefulWidget{
 class _HomePageState extends State<HomePage> {
   int _page = 0;
   GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
+  bool darkModeEnabled = false;
+
 
   List<Widget> _pages = [Page1(), Page2(), Page3()];
 

@@ -15,6 +15,7 @@
         android:label="Eye 20"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
+
         <activity
             android:showWhenLocked="true"
             android:turnScreenOn="true"
@@ -38,6 +39,8 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <!-- Add android:stopWithTask option only when necessary. -->
+
             <intent-filter>
                 <action android:name="android.intent.action.SCREEN_OFF"/>
                 <action android:name="android.intent.action.SCREEN_ON"/>
@@ -45,6 +48,11 @@
             </intent-filter>
 
         </activity>
+
+        <service
+            android:name="com.pravera.flutter_foreground_task.service.ForegroundService"
+            android:stopWithTask="true"
+            tools:ignore="MissingClass" />
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
