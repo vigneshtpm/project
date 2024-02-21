@@ -4,8 +4,12 @@ import 'package:permission_handler/permission_handler.dart';
 class NotificationService {
   final FlutterLocalNotificationsPlugin notificationsPlugin =
   FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
 
   Future<void> initNotification() async {
+    await requestNotificationPermission();
+
     const AndroidInitializationSettings initializationSettingsAndroid =
     AndroidInitializationSettings('eye_logo');
 

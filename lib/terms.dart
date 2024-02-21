@@ -1,12 +1,16 @@
 // terms_and_conditions.dart
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'dark_mode_provider.dart';
+
 
 class Terms extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final darkModeProvider = Provider.of<DarkModeProvider>(context);
     return Scaffold(
-      backgroundColor: Colors.blueAccent,
+      backgroundColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
@@ -19,7 +23,7 @@ class Terms extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
         toolbarHeight: 110.0,
       ),
       body: SingleChildScrollView(
@@ -52,13 +56,13 @@ class Terms extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 10.0),
-              buildBulletPoint('- Frequency: Commit to following the 20-20-20 rule consistently throughout your screen time.'),
-              buildBulletPoint('- Reminders: Set alarms or use reminder apps to prompt you to take breaks every 20 minutes.'),
-              buildBulletPoint('- Compliance: Make a conscious effort to adhere to the rule, acknowledging its importance in preventing eye strain.'),
-              buildBulletPoint('- Duration: Ensure that you take a break for at least 20 seconds, looking at something 20 feet away to allow your eyes to relax.'),
-              buildBulletPoint('- Environment: Choose a point of focus during your break that is approximately 20 feet away to maximize the benefits of the rule.'),
-              buildBulletPoint('- Consistency: Apply the 20-20-20 rule across various devices, such as computers, tablets, and smartphones.'),
-              buildBulletPoint('- Adjustments: Modify the rule based on your specific needs, considering factors like the nature of your work, screen brightness, and ambient lighting.'),
+              buildBulletPoint(' Frequency: Commit to following the 20-20-20 rule consistently throughout your screen time.'),
+              buildBulletPoint(' Reminders: Set alarms or use reminder apps to prompt you to take breaks every 20 minutes.'),
+              buildBulletPoint(' Compliance: Make a conscious effort to adhere to the rule, acknowledging its importance in preventing eye strain.'),
+              buildBulletPoint(' Duration: Ensure that you take a break for at least 20 seconds, looking at something 20 feet away to allow your eyes to relax.'),
+              buildBulletPoint(' Environment: Choose a point of focus during your break that is approximately 20 feet away to maximize the benefits of the rule.'),
+              buildBulletPoint(' Consistency: Apply the 20-20-20 rule across various devices, such as computers, tablets, and smartphones.'),
+              buildBulletPoint(' Adjustments: Modify the rule based on your specific needs, considering factors like the nature of your work, screen brightness, and ambient lighting.'),
               SizedBox(height: 20.0),
               Text(
                 'Remember, the 20-20-20 rule is a guideline rather than a strict set of terms and conditions. Adjust it to suit your individual preferences and work habits, but the key is to incorporate regular breaks to alleviate eye strain associated with prolonged screen use.',

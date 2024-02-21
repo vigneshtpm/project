@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import 'dark_mode_provider.dart';
 import 'splash_screen.dart';
 
 
@@ -7,7 +8,10 @@ import 'splash_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (context) => DarkModeProvider(),
+    child: MyApp(),
+  ),);
 }
 
 class MyApp extends StatelessWidget {

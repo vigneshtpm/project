@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'dart:async';
 import 'package:just_audio/just_audio.dart';
 import 'Notification_service.dart';
+import 'dark_mode_provider.dart';
+import 'package:provider/provider.dart';
 
 class UserFunc extends StatefulWidget {
   final int workTime;
@@ -23,21 +27,27 @@ class _UserFuncState extends State<UserFunc> {
   int elapsedTime = 0;
   Timer? timer;
   AudioPlayer audioPlayer = AudioPlayer();
+  bool isWorkPhase = false;
+  var foregroundTask = FlutterForegroundTask();
+  bool isForegroundTaskRunning = false;
 
   @override
   void initState() {
     super.initState();
     notificationService.initNotification();
+
     // Convert workTime and breakTime to seconds
     convertedWorkTime = widget.workTime * 60;
     convertedBreakTime = widget.breakTime * 60;
+    isWorkPhase = elapsedTime <= convertedWorkTime;
+
   }
 
   @override
   Widget build(BuildContext context) {
-    bool isWorkPhase = elapsedTime <= convertedWorkTime;
+    final darkModeProvider = Provider.of<DarkModeProvider>(context);
     return Scaffold(
-      backgroundColor: Colors.blueAccent,
+      backgroundColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
@@ -51,7 +61,7 @@ class _UserFuncState extends State<UserFunc> {
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
         toolbarHeight: 110.0,
       ),
       body: Padding(
@@ -76,11 +86,13 @@ class _UserFuncState extends State<UserFunc> {
               percent: percent,
               center: Text(
                 formatTime(
-                  isWorkPhase
-                      ? convertedWorkTime - elapsedTime
-                      : convertedBreakTime - (elapsedTime - convertedWorkTime),
+                    elapsedTime < convertedWorkTime
+                        ? convertedWorkTime - elapsedTime
+                        : convertedBreakTime - (elapsedTime - convertedWorkTime)
                 ),
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 38.0),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 38.0,
+                color:darkModeProvider.darkModeEnabled ? Colors.white : Colors.black,
+                ),
               ),
               circularStrokeCap: CircularStrokeCap.round,
               backgroundColor: Colors.white,
@@ -167,6 +179,7 @@ class _UserFuncState extends State<UserFunc> {
             startTimer();
           }
           elapsedTime++;
+          isWorkPhase = elapsedTime <= convertedWorkTime;
         });
       });
       isRunning = true;

@@ -1,12 +1,15 @@
-// about_us.dart
-
 import 'package:flutter/material.dart';
+import 'dark_mode_provider.dart';
+import 'package:provider/provider.dart';
 
 class AboutUsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final darkModeEnabledProvider =
+    Provider.of<DarkModeProvider>(context, listen: false);
+
     return Scaffold(
-      backgroundColor: Colors.blueAccent,
+      backgroundColor: darkModeEnabledProvider.darkModeEnabled? Colors.black : Colors.blueAccent,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
@@ -19,7 +22,7 @@ class AboutUsPage extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: darkModeEnabledProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
         toolbarHeight: 110.0,
       ),
       body: Center(

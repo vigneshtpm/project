@@ -5,6 +5,8 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'dart:async';
 import 'package:just_audio/just_audio.dart';
 import 'Notification_service.dart';
+import 'package:provider/provider.dart';
+import 'dark_mode_provider.dart';
 
 
 const int kWorkDurationInSeconds = 20*60;
@@ -27,31 +29,30 @@ class _Page1State extends State<Page1> {
   bool isWorkPhase = false;
   var foregroundTask = FlutterForegroundTask();
   bool isForegroundTaskRunning = false;
-  static const taskId = 'timer_task';
+
 
   @override
   void initState(){
+
     notificationService.initNotification();
+    notificationService.requestNotificationPermission();
     isWorkPhase = elapsedTime <= kWorkDurationInSeconds;
     super.initState();
-    Permission.microphone.status.then((status) {
-      if (status != PermissionStatus.granted) {
-        Permission.microphone.request();
-      }
-    });
+
   }
 
   @override
   Widget build(BuildContext context) {
+    final darkModeProvider = Provider.of<DarkModeProvider>(context);
     return Scaffold(
-      backgroundColor: Colors.blueAccent,
+      backgroundColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
       appBar: AppBar(
         title: const Text(
           '20-20-20',
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
         toolbarHeight: 110.0,
       ),
       body: Center(
@@ -78,7 +79,11 @@ class _Page1State extends State<Page1> {
                     elapsedTime < kWorkDurationInSeconds
                         ? kWorkDurationInSeconds - elapsedTime
                         : kRestDurationInSeconds - (elapsedTime - kWorkDurationInSeconds)),
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 38.0),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 38.0,
+                    color:darkModeProvider.darkModeEnabled ? Colors.white : Colors.black,
+                ),
               ),
               footer: const Text(
                 "",

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'usercommand.dart';
+import 'package:provider/provider.dart';
+import 'dark_mode_provider.dart';
 
 class Page2 extends StatefulWidget {
   @override
@@ -39,15 +41,16 @@ class _Page2State extends State<Page2> {
 
   @override
   Widget build(BuildContext context) {
+    final darkModeProvider = Provider.of<DarkModeProvider>(context);
     return Scaffold(
-      backgroundColor: Colors.blueAccent,
+      backgroundColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
       appBar: AppBar(
         title: const Text(
           'Customize',
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
         toolbarHeight: 110.0,
       ),
       body: Center(

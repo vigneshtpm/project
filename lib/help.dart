@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'dark_mode_provider.dart';
 
 class Help extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final darkModeProvider = Provider.of<DarkModeProvider>(context);
     return Scaffold(
-      backgroundColor: Colors.blueAccent,
+      backgroundColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
@@ -17,7 +20,7 @@ class Help extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
         toolbarHeight: 110.0,
       ),
       body: SingleChildScrollView(

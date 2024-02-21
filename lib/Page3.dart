@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:project/Notification_service.dart';
-import 'about.dart';
-import 'terms.dart';
-import 'help.dart';
+import 'package:project/about.dart';
+import 'package:project/terms.dart';
+import 'package:project/help.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:async';
+import 'package:provider/provider.dart';
+import 'dark_mode_provider.dart';
 
 class Page3 extends StatefulWidget {
   @override
@@ -11,43 +15,69 @@ class Page3 extends StatefulWidget {
 
 class _Page3State extends State<Page3> {
   bool notificationsEnabled = false;
-  bool darkModeEnabled = false;
-  NotificationService notificationService = NotificationService();
-
+  late NotificationService notificationService;
+  late DarkModeProvider darkModeProvider;
 
   @override
   void initState() {
     super.initState();
+    darkModeProvider = Provider.of<DarkModeProvider>(context, listen: false);
     // Initialize notifications when the widget is created
+    notificationService = NotificationService();
     notificationService.initNotification();
+    // Load settings from shared preferences
+    _loadSettings();
+  }
+
+  Future<void> _loadSettings() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      notificationsEnabled = prefs.getBool('notificationsEnabled') ?? false;
+      darkModeProvider.darkModeEnabled =
+          prefs.getBool('darkModeEnabled') ?? false;
+    });
   }
 
   Future<void> handleNotificationsSwitch(bool value) async {
     // Request notification permission
     await notificationService.requestNotificationPermission();
-
     setState(() {
       notificationsEnabled = value;
     });
 
-    // Add logic to handle enabling/disabling notifications
+
+    // Save setting to shared preferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('notificationsEnabled', value);
   }
 
   @override
   Widget build(BuildContext context) {
+    final darkModeEnabledProvider =
+    Provider.of<DarkModeProvider>(context, listen: false);
     return MaterialApp(
-      theme: ThemeData.light(),
+      theme: ThemeData.light().copyWith(
+        textTheme: ThemeData
+            .light()
+            .textTheme
+            .apply(
+          bodyColor: Colors.black,
+          displayColor: Colors.black,
+        ),
+      ),
       darkTheme: ThemeData.dark(),
-      themeMode: darkModeEnabled ? ThemeMode.dark : ThemeMode.light,
+      themeMode: darkModeEnabledProvider.darkModeEnabled
+          ? ThemeMode.dark
+          : ThemeMode.light,
       home: Scaffold(
-        backgroundColor: darkModeEnabled ? Colors.black : Colors.blueAccent,
+        backgroundColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
         appBar: AppBar(
           title: const Text(
             'Settings',
             style: TextStyle(color: Colors.white),
           ),
           centerTitle: true,
-          backgroundColor: darkModeEnabled ? Colors.black : Colors.blueAccent,
+          backgroundColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
           toolbarHeight: 110.0,
         ),
         body: Padding(
@@ -66,31 +96,22 @@ class _Page3State extends State<Page3> {
                 ),
                 dense: true,
               ),
-              ListTile(
-                title: Text(
-                  'Notifications',
-                  style: TextStyle(color: Colors.white),
-                ),
-                trailing: Switch(
-                  value: notificationsEnabled,
-                  onChanged: (value) {
-                    handleNotificationsSwitch(value);
-                  },
-                  activeTrackColor: Colors.grey,
-                  activeColor: Colors.white,
-                ),
-              ),
+
               ListTile(
                 title: Text(
                   'Dark Mode',
                   style: TextStyle(color: Colors.white),
                 ),
                 trailing: Switch(
-                  value: darkModeEnabled,
-                  onChanged: (value) {
+                  value: darkModeProvider.darkModeEnabled,
+                  onChanged: (value) async {
                     setState(() {
-                      darkModeEnabled = value;
+                      darkModeProvider.darkModeEnabled = value;
                     });
+                    // Save setting to shared preferences
+                    SharedPreferences prefs = await SharedPreferences
+                        .getInstance();
+                    prefs.setBool('darkModeEnabled', value);
                   },
                   activeTrackColor: Colors.grey,
                   activeColor: Colors.white,
@@ -183,9 +204,9 @@ class _Page3State extends State<Page3> {
                 ),
                 trailing: Icon(
                   Icons.keyboard_arrow_down,
-                  color: Colors.blueAccent,
+                  color:darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
                 ),
-                backgroundColor: Colors.blueAccent,
+                backgroundColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
                 children: [
                   Container(
                     child: Column(
