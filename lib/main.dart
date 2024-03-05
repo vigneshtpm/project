@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dark_mode_provider.dart';
 import 'splash_screen.dart';
+import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 
 
 
@@ -10,7 +11,7 @@ void main() async {
 
   runApp(ChangeNotifierProvider(
     create: (context) => DarkModeProvider(),
-    child: MyApp(),
+    child: const MyApp(),
   ),);
 }
 

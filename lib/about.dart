@@ -3,6 +3,8 @@ import 'dark_mode_provider.dart';
 import 'package:provider/provider.dart';
 
 class AboutUsPage extends StatelessWidget {
+  const AboutUsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final darkModeEnabledProvider =
@@ -12,7 +14,7 @@ class AboutUsPage extends StatelessWidget {
       backgroundColor: darkModeEnabledProvider.darkModeEnabled? Colors.black : Colors.blueAccent,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -25,9 +27,9 @@ class AboutUsPage extends StatelessWidget {
         backgroundColor: darkModeEnabledProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
         toolbarHeight: 110.0,
       ),
-      body: Center(
+      body: const Center(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,

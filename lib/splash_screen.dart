@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'homepage.dart';
 
 class SplashPage extends StatefulWidget {
+  const SplashPage({super.key});
+
   @override
   _SplashPageState createState() => _SplashPageState();
 }
@@ -10,7 +12,7 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   Future<void> _initializeApp() async {
     // Perform heavy initializations here
-    await Future.delayed(Duration(seconds: 3)); // Simulating heavy initialization
+    await Future.delayed(const Duration(seconds: 1)); // Simulating heavy initialization
   }
 
   @override
@@ -19,7 +21,7 @@ class _SplashPageState extends State<SplashPage> {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
 
     _initializeApp().then((_) {
-      Future.delayed(Duration(seconds: 1), () {
+      Future.delayed(const Duration(seconds: 1), () {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (_) => const HomePage(),
@@ -43,9 +45,9 @@ class _SplashPageState extends State<SplashPage> {
         children: [
           Container(
             width: double.infinity,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: const [Colors.blueAccent, Colors.blue],
+                colors: [Colors.blueAccent, Colors.blue],
                 begin: Alignment.topRight,
                 end: Alignment.bottomRight,
               ),
@@ -58,8 +60,8 @@ class _SplashPageState extends State<SplashPage> {
                   width: 100,
                   height: 100,
                 ),
-                SizedBox(height: 20),
-                Text(
+                const SizedBox(height: 20),
+                const Text(
                   'Eyes 20',
                   style: TextStyle(
                     fontStyle: FontStyle.italic,
@@ -71,10 +73,10 @@ class _SplashPageState extends State<SplashPage> {
               ],
             ),
           ),
-          Align(
+          const Align(
             alignment: Alignment.bottomCenter, // Adjust alignment to bottom-center
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(16.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [

@@ -1,10 +1,12 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' ;
 import 'package:flutter/services.dart';
 import 'usercommand.dart';
 import 'package:provider/provider.dart';
 import 'dark_mode_provider.dart';
 
 class Page2 extends StatefulWidget {
+  const Page2({super.key});
+
   @override
   _Page2State createState() => _Page2State();
 }
@@ -51,9 +53,11 @@ class _Page2State extends State<Page2> {
         ),
         centerTitle: true,
         backgroundColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
-        toolbarHeight: 110.0,
+        toolbarHeight: 60.0,
       ),
-      body: Center(
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(vertical: 130.0, horizontal: 20.0),
+        child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -62,19 +66,19 @@ class _Page2State extends State<Page2> {
               child: InkWell(
                 onTap: () => _selectWorkTime(context),
                 child: InputDecorator(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Select Working Time',
                     labelStyle: TextStyle(color: Colors.white),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(width: 2, color: Colors.white),
-                      borderRadius: const BorderRadius.all(
-                        const Radius.circular(30.0),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(30.0),
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(width: 2, color: Colors.white38),
-                      borderRadius: const BorderRadius.all(
-                        const Radius.circular(30.0),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(30.0),
                       ),
                     ),
                   ),
@@ -84,7 +88,7 @@ class _Page2State extends State<Page2> {
                     children: <Widget>[
                       Text(
                         "${selectedWorkTimeInMinutes ~/ 60} hours ${selectedWorkTimeInMinutes % 60} minutes",
-                        style: TextStyle(fontSize: 17.0, color: Colors.white),
+                        style: const TextStyle(fontSize: 17.0, color: Colors.white),
                       ),
                     ],
                   ),
@@ -96,19 +100,19 @@ class _Page2State extends State<Page2> {
               child: InkWell(
                 onTap: () => _selectBreakTime(context),
                 child: InputDecorator(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Select Break Time',
                     labelStyle: TextStyle(color: Colors.white),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(width: 2, color: Colors.white),
-                      borderRadius: const BorderRadius.all(
-                        const Radius.circular(30.0),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(30.0),
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(width: 2, color: Colors.white38),
-                      borderRadius: const BorderRadius.all(
-                        const Radius.circular(30.0),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(30.0),
                       ),
                     ),
                   ),
@@ -118,14 +122,14 @@ class _Page2State extends State<Page2> {
                     children: <Widget>[
                       Text(
                         "${selectedBreakTimeInMinutes ~/ 60} hours ${selectedBreakTimeInMinutes % 60} minutes",
-                        style: TextStyle(fontSize: 17.0, color: Colors.white),
+                        style: const TextStyle(fontSize: 17.0, color: Colors.white),
                       ),
                     ],
                   ),
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 HapticFeedback.lightImpact();
@@ -141,17 +145,17 @@ class _Page2State extends State<Page2> {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.greenAccent,
-                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 34),
+                padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 34),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0),
-                  side: BorderSide(color: Colors.white, width: 1),
+                  //side: const BorderSide(color: Colors.white, width: 1),
                 ),
                 elevation: 5,
               ),
               child: const Text(
                 "Next",
                 style: TextStyle(
-                  color: Colors.black,
+                  color: Colors.white,
                   fontSize: 17,
                 ),
               ),
@@ -159,6 +163,7 @@ class _Page2State extends State<Page2> {
           ],
         ),
       ),
+        ),
     );
   }
 }

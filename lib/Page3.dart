@@ -9,6 +9,8 @@ import 'package:provider/provider.dart';
 import 'dark_mode_provider.dart';
 
 class Page3 extends StatefulWidget {
+  const Page3({super.key});
+
   @override
   _Page3State createState() => _Page3State();
 }
@@ -78,14 +80,16 @@ class _Page3State extends State<Page3> {
           ),
           centerTitle: true,
           backgroundColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
-          toolbarHeight: 110.0,
+          toolbarHeight: 60.0,
         ),
-        body: Padding(
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 20.0),
+          child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ListTile(
+              const ListTile(
                 title: Text(
                   'App Settings',
                   style: TextStyle(
@@ -98,7 +102,7 @@ class _Page3State extends State<Page3> {
               ),
 
               ListTile(
-                title: Text(
+                title: const Text(
                   'Dark Mode',
                   style: TextStyle(color: Colors.white),
                 ),
@@ -117,11 +121,11 @@ class _Page3State extends State<Page3> {
                   activeColor: Colors.white,
                 ),
               ),
-              Divider(
+              const Divider(
                 color: Colors.white,
                 thickness: 1.0,
               ),
-              ListTile(
+              const ListTile(
                 title: Text(
                   'More',
                   style: TextStyle(
@@ -133,7 +137,7 @@ class _Page3State extends State<Page3> {
                 dense: true,
               ),
               ListTile(
-                title: Row(
+                title: const Row(
                   children: [
                     Text(
                       'About Us',
@@ -145,12 +149,12 @@ class _Page3State extends State<Page3> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AboutUsPage()),
+                    MaterialPageRoute(builder: (context) => const AboutUsPage()),
                   );
                 },
               ),
               ListTile(
-                title: Row(
+                title: const Row(
                   children: [
                     Text(
                       'Terms and Conditions',
@@ -166,12 +170,12 @@ class _Page3State extends State<Page3> {
                   );
                 },
               ),
-              Divider(
+              const Divider(
                 color: Colors.white,
                 thickness: 1.0,
               ),
               ListTile(
-                title: Row(
+                title: const Row(
                   children: [
                     Icon(Icons.help, color: Colors.white),
                     SizedBox(width: 16.0),
@@ -184,14 +188,14 @@ class _Page3State extends State<Page3> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Help()),
+                    MaterialPageRoute(builder: (context) => const Help()),
                   );
                 },
               ),
               ExpansionTile(
                 title: Container(
-                  decoration: BoxDecoration(),
-                  child: Row(
+                  decoration: const BoxDecoration(),
+                  child: const Row(
                     children: [
                       Icon(Icons.feedback, color: Colors.white),
                       SizedBox(width: 16.0),
@@ -207,32 +211,31 @@ class _Page3State extends State<Page3> {
                   color:darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
                 ),
                 backgroundColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
-                children: [
-                  Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(16.0),
-                          child: Row(
-                            children: [
-                              Icon(Icons.email, color: Colors.white),
-                              SizedBox(width: 16.0),
-                              Text(
-                                'vigneshwaranrk2@gmail.com',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
+                children: const [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Row(
+                          children: [
+                            Icon(Icons.email, color: Colors.white),
+                            SizedBox(width: 16.0),
+                            Text(
+                              'vigneshwaranrk2@gmail.com',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ],
           ),
         ),
+      ),
       ),
     );
   }

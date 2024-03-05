@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'dart:async';
 import 'package:just_audio/just_audio.dart';
@@ -12,7 +11,7 @@ class UserFunc extends StatefulWidget {
   final int workTime;
   final int breakTime;
 
-  UserFunc({required this.workTime, required this.breakTime});
+  UserFunc({super.key, required this.workTime, required this.breakTime});
 
   @override
   _UserFuncState createState() => _UserFuncState();
@@ -28,6 +27,7 @@ class _UserFuncState extends State<UserFunc> {
   Timer? timer;
   AudioPlayer audioPlayer = AudioPlayer();
   bool isWorkPhase = false;
+  bool isButtonDisabled = false;
   var foregroundTask = FlutterForegroundTask();
   bool isForegroundTaskRunning = false;
 
@@ -40,7 +40,6 @@ class _UserFuncState extends State<UserFunc> {
     convertedWorkTime = widget.workTime * 60;
     convertedBreakTime = widget.breakTime * 60;
     isWorkPhase = elapsedTime <= convertedWorkTime;
-
   }
 
   @override
@@ -50,7 +49,7 @@ class _UserFuncState extends State<UserFunc> {
       backgroundColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             // Add logic to navigate back when the back arrow is pressed
             Navigator.pop(context);
@@ -62,9 +61,11 @@ class _UserFuncState extends State<UserFunc> {
         ),
         centerTitle: true,
         backgroundColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
-        toolbarHeight: 110.0,
+        toolbarHeight: 60.0,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(vertical: 130.0, horizontal: 20.0),
+      child:Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -90,59 +91,67 @@ class _UserFuncState extends State<UserFunc> {
                         ? convertedWorkTime - elapsedTime
                         : convertedBreakTime - (elapsedTime - convertedWorkTime)
                 ),
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 38.0,
-                color:darkModeProvider.darkModeEnabled ? Colors.white : Colors.black,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 60.0,
+                color:darkModeProvider.darkModeEnabled ? Colors.white : Colors.white,
                 ),
               ),
               circularStrokeCap: CircularStrokeCap.round,
               backgroundColor: Colors.white,
-              progressColor: Colors.blueAccent,
+              progressColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: isButtonDisabled ? null : () {
                     startTimer();
+                    setState(() {
+                      isButtonDisabled = true;
+                    });
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.greenAccent,
-                    padding: EdgeInsets.symmetric(vertical: 16, horizontal: 34),
+                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 34),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),
-                      side: BorderSide(color: Colors.white, width: 1),
+                      //side: const BorderSide(color: Colors.white, width: 1),
                     ),
                     elevation: 5,
                   ),
                   child: const Text(
                     "Start",
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.white,fontSize: 17,),
                   ),
                 ),
-                SizedBox(width: 20),
+                const SizedBox(width: 20),
                 ElevatedButton(
                   onPressed: () {
                     stopTimer();
+                    setState(() {
+                      isButtonDisabled = false;
+                    });
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.redAccent,
-                    padding: EdgeInsets.symmetric(vertical: 16, horizontal: 34),
+                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 34),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),
-                      side: BorderSide(color: Colors.white, width: 1),
+                      //side: const BorderSide(color: Colors.white, width: 1),
                     ),
                     elevation: 5,
                   ),
                   child: const Text(
                     "Stop",
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.white,fontSize: 17,),
                   ),
                 ),
               ],
             ),
           ],
         ),
+      ),
       ),
     );
   }
@@ -152,7 +161,7 @@ class _UserFuncState extends State<UserFunc> {
 
   void startTimer() {
     if (!isRunning) {
-      timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
+      timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
         setState(() {
           if (elapsedTime <= convertedWorkTime) {
             // Work cycle
@@ -161,13 +170,16 @@ class _UserFuncState extends State<UserFunc> {
             {
               playSound();
             }
-            if (elapsedTime==1){
+            if (elapsedTime==0){
+              playSound();
+            }
+            else if (elapsedTime==1){
               showNotification("Start Work", "Enjoy Your Life");
             }
             else if (elapsedTime == convertedWorkTime-1) {
               showNotification("Stop Work", "Enjoy Your Break Time");
             }
-          } else if (elapsedTime <= convertedBreakTime + convertedBreakTime) {
+           } else if (elapsedTime <= convertedBreakTime + convertedBreakTime) {
             // Rest cycle
             percent = (elapsedTime - convertedWorkTime) / convertedBreakTime;
             if (elapsedTime == convertedWorkTime+convertedBreakTime){

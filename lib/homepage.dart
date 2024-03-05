@@ -16,11 +16,15 @@ class HomePage extends StatefulWidget{
 
 class _HomePageState extends State<HomePage> {
   int _page = 0;
-  GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
-  bool darkModeEnabled = false;
+  final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey =
+  GlobalKey();
+  late PageController _pageController;
 
-
-  List<Widget> _pages = [Page1(), Page2(), Page3()];
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: _page);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,23 +32,37 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       bottomNavigationBar: CurvedNavigationBar(
         key: _bottomNavigationKey,
-        items: <Widget>[
+        items: const <Widget>[
           Icon(Icons.timer, size: 30),
           Icon(Icons.more_time, size: 30),
           Icon(Icons.settings, size: 30),
         ],
         color: Colors.white,
         buttonBackgroundColor: Colors.white,
-        backgroundColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
+        backgroundColor:
+        darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
         animationCurve: Curves.easeInOut,
-        animationDuration: Duration(milliseconds: 600),
+        animationDuration: const Duration(milliseconds: 600),
         onTap: (index) {
           setState(() {
             _page = index;
+            _pageController.animateToPage(
+              index,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            );
           });
         },
       ),
-      body: _pages[_page],
+      body: PageView(
+        controller: _pageController,
+        physics: const NeverScrollableScrollPhysics(),
+        children: const <Widget>[
+          Page1(),
+          Page2(),
+          Page3(),
+        ],
+      ),
     );
   }
 }

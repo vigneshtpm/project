@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'dart:async';
@@ -13,6 +12,8 @@ const int kWorkDurationInSeconds = 20*60;
 const int kRestDurationInSeconds = 20;
 
 class Page1 extends StatefulWidget {
+  const Page1({super.key});
+
   @override
   _Page1State createState() => _Page1State();
 
@@ -27,6 +28,7 @@ class _Page1State extends State<Page1> {
   Timer? timer;
   AudioPlayer audioPlayer = AudioPlayer();
   bool isWorkPhase = false;
+  bool isButtonDisabled = false;
   var foregroundTask = FlutterForegroundTask();
   bool isForegroundTaskRunning = false;
 
@@ -53,10 +55,12 @@ class _Page1State extends State<Page1> {
         ),
         centerTitle: true,
         backgroundColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
-        toolbarHeight: 110.0,
+        toolbarHeight: 60.0,
       ),
-      body: Center(
-        child: Column(
+        body: SingleChildScrollView( // Wrap the Column with SingleChildScrollView
+          padding: EdgeInsets.symmetric(vertical: 130.0, horizontal: 20.0),
+          child: Center(
+          child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
@@ -81,8 +85,8 @@ class _Page1State extends State<Page1> {
                         : kRestDurationInSeconds - (elapsedTime - kWorkDurationInSeconds)),
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 38.0,
-                    color:darkModeProvider.darkModeEnabled ? Colors.white : Colors.black,
+                    fontSize: 60.0,
+                    color:darkModeProvider.darkModeEnabled ? Colors.white : Colors.white,
                 ),
               ),
               footer: const Text(
@@ -91,47 +95,53 @@ class _Page1State extends State<Page1> {
               ),
               circularStrokeCap: CircularStrokeCap.round,
               backgroundColor: Colors.white,
-              progressColor: Colors.blueAccent,
+              progressColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: isButtonDisabled ? null : () {
                     startTimer();
+                    setState(() {
+                      isButtonDisabled = true;
+                    });
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.greenAccent,
-                    padding: EdgeInsets.symmetric(vertical: 16, horizontal: 34),
+                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 34),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),
-                      side: BorderSide(color: Colors.white, width: 1),
+                      //side: const BorderSide(color: Colors.white, width: 0),
                     ),
                     elevation: 5,
                   ),
                   child: const Text(
                     "Start",
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.white,fontSize: 17,),
                   ),
                 ),
-                SizedBox(width: 20),
+                const SizedBox(width: 20),
                 ElevatedButton(
                   onPressed: () {
                     stopTimer();
+                    setState(() {
+                      isButtonDisabled = false;
+                    });
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.redAccent,
-                    padding: EdgeInsets.symmetric(vertical: 16, horizontal: 34),
+                    backgroundColor: Colors.red,
+                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 34),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),
-                      side: BorderSide(color: Colors.white, width: 1),
+                      //side: const BorderSide(color: Colors.white, width: 0),
                     ),
                     elevation: 5,
                   ),
                   child: const Text(
                     "Stop",
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.white,fontSize: 17,),
                   ),
                 ),
               ],
@@ -139,6 +149,7 @@ class _Page1State extends State<Page1> {
           ],
         ),
       ),
+        ),
     );
   }
   void showNotification(String title, String body) {
@@ -146,7 +157,7 @@ class _Page1State extends State<Page1> {
   }
   void startTimer() {
     if (!isRunning) {
-      timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
+      timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
         setState(() {
           if (elapsedTime <= kWorkDurationInSeconds) {
             // Work cycle
@@ -155,7 +166,11 @@ class _Page1State extends State<Page1> {
             {
               playSound();
             }
-            if (elapsedTime==1){
+            if (elapsedTime==0){
+              playSound();
+              showNotification("Start Work", "Enjoy Your Life");
+            }
+            else if (elapsedTime==1){
               showNotification("Start Work", "Enjoy Your Life");
             }
             else if (elapsedTime == kWorkDurationInSeconds-1) {

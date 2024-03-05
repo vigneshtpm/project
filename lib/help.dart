@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'dark_mode_provider.dart';
 
 class Help extends StatelessWidget {
+  const Help({super.key});
+
   @override
   Widget build(BuildContext context) {
     final darkModeProvider = Provider.of<DarkModeProvider>(context);
@@ -10,7 +12,7 @@ class Help extends StatelessWidget {
       backgroundColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -23,10 +25,10 @@ class Help extends StatelessWidget {
         backgroundColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
         toolbarHeight: 110.0,
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         physics: BouncingScrollPhysics(), // or ClampingScrollPhysics()
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

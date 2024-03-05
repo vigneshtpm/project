@@ -13,7 +13,7 @@ class NotificationService {
     const AndroidInitializationSettings initializationSettingsAndroid =
     AndroidInitializationSettings('eye_logo');
 
-    final InitializationSettings initializationSettings =
+    const InitializationSettings initializationSettings =
     InitializationSettings(android: initializationSettingsAndroid);
 
     await notificationsPlugin.initialize(
@@ -30,7 +30,7 @@ class NotificationService {
     String? body,
     String? payload,
   }) async {
-    final AndroidNotificationDetails androidPlatformChannelSpecifics =
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
     AndroidNotificationDetails(
       'Eye 20',
       'display notification',
@@ -40,7 +40,7 @@ class NotificationService {
     );
 
     NotificationDetails platformChannelSpecifics =
-    NotificationDetails(android: androidPlatformChannelSpecifics);
+    const NotificationDetails(android: androidPlatformChannelSpecifics);
 
     await notificationsPlugin.show(
       id,
