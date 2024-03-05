@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'homepage.dart';
+import 'package:project/onboardscreen.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -24,7 +24,7 @@ class _SplashPageState extends State<SplashPage> {
       Future.delayed(const Duration(seconds: 1), () {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (_) => const HomePage(),
+            builder: (_) => OnboardingView(),
           ),
         );
       });

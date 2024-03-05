@@ -39,8 +39,7 @@ class _HomePageState extends State<HomePage> {
         ],
         color: Colors.white,
         buttonBackgroundColor: Colors.white,
-        backgroundColor:
-        darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
+        backgroundColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
         animationCurve: Curves.easeInOut,
         animationDuration: const Duration(milliseconds: 600),
         onTap: (index) {

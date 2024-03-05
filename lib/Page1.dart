@@ -168,7 +168,7 @@ class _Page1State extends State<Page1> {
             }
             if (elapsedTime==0){
               playSound();
-              showNotification("Start Work", "Enjoy Your Life");
+
             }
             else if (elapsedTime==1){
               showNotification("Start Work", "Enjoy Your Life");
