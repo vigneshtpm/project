@@ -112,7 +112,7 @@ class _UserFuncState extends State<UserFunc> {
                     });
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.greenAccent,
+                    backgroundColor: Colors.green,
                     padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 34),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),
@@ -134,7 +134,7 @@ class _UserFuncState extends State<UserFunc> {
                     });
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.redAccent,
+                    backgroundColor: Colors.red,
                     padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 34),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),

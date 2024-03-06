@@ -109,7 +109,7 @@ class _Page1State extends State<Page1> {
                     });
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.greenAccent,
+                    backgroundColor: Colors.green,
                     padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 34),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),

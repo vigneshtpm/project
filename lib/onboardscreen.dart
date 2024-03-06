@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project/homepage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingView extends StatefulWidget {
   @override
@@ -12,9 +13,9 @@ class _OnboardingViewState extends State<OnboardingView> {
 
   final List<String> imagePaths = [
     'assets/image1.jpg',
-    'assets/image2.jpg',
-    'assets/image3.jpg',
-    'assets/image4.jpg',
+    'assets/images/20.png',
+    'assets/images/customize.png'
+    'assets/images/Setting.png'
   ];
 
   final List<String> titles = [
@@ -31,6 +32,29 @@ class _OnboardingViewState extends State<OnboardingView> {
     'Description for page 4',
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    _checkOnboardingStatus();
+  }
+
+  Future<void> _checkOnboardingStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool onboardingCompleted = prefs.getBool('onboarding_completed') ?? false;
+
+    if (onboardingCompleted) {
+      // Onboarding already completed, navigate to HomePage
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    }
+  }
+
+  Future<void> _setOnboardingCompleted() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('onboarding_completed', true);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +81,8 @@ class _OnboardingViewState extends State<OnboardingView> {
             top: 30,
             right: 20,
             child: ElevatedButton(
-              onPressed: () {
-                // Navigate to HomePage when Skip button is clicked
+              onPressed: () async {
+                await _setOnboardingCompleted();
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => HomePage()),
@@ -85,7 +109,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                 ElevatedButton(
                   onPressed: () {
                     if (_currentPage == 0) {
-                      // Navigate to HomePage when Finish button is clicked
+                      // Skip button logic if needed on the first page
                     } else {
                       _pageController.previousPage(
                         duration: Duration(milliseconds: 500),
@@ -113,7 +137,8 @@ class _OnboardingViewState extends State<OnboardingView> {
                 ElevatedButton(
                   onPressed: () {
                     if (_currentPage == imagePaths.length - 1) {
-                      // Navigate to HomePage when Finish button is clicked
+                      // Finish button logic if needed on the last page
+                      _setOnboardingCompleted();
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => HomePage()),
@@ -200,3 +225,4 @@ class OnboardingPage extends StatelessWidget {
     );
   }
 }
+
