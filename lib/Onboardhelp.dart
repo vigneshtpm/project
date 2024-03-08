@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:project/homepage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class OnboardingView extends StatefulWidget {
+class OnboardingHelp extends StatefulWidget {
   @override
-  _OnboardingViewState createState() => _OnboardingViewState();
+  _OnboardingHelpState createState() => _OnboardingHelpState();
 }
 
-class _OnboardingViewState extends State<OnboardingView> {
+class _OnboardingHelpState extends State<OnboardingHelp> {
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
 
@@ -31,30 +29,6 @@ class _OnboardingViewState extends State<OnboardingView> {
     'Customize your experience and settings to suit your preferences.',
     'Adjust application settings to make your Eyes 20 experience even better.',
   ];
-
-  @override
-  void initState() {
-    super.initState();
-    _checkOnboardingStatus();
-  }
-
-  Future<void> _checkOnboardingStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool onboardingCompleted = prefs.getBool('onboarding_completed') ?? false;
-
-    if (onboardingCompleted) {
-      // Onboarding already completed, navigate to HomePage
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
-      );
-    }
-  }
-
-  Future<void> _setOnboardingCompleted() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('onboarding_completed', true);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,12 +64,9 @@ class _OnboardingViewState extends State<OnboardingView> {
             top: 50,
             right: 20,
             child: ElevatedButton(
-              onPressed: () async {
-                await _setOnboardingCompleted();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
-                );
+              onPressed: () {
+                // Add logic to close or exit the onboarding page
+                Navigator.pop(context); // Example: Close the onboarding page
               },
               style: ElevatedButton.styleFrom(
                 primary: Colors.transparent,
@@ -103,7 +74,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
               ),
               child: const Text(
-                'Skip',
+                'Close',
                 style: TextStyle(fontSize: 16, color: Colors.white),
               ),
             ),
@@ -147,11 +118,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                   onPressed: () {
                     if (_currentPage == imagePaths.length - 1) {
                       // Finish button logic if needed on the last page
-                      _setOnboardingCompleted();
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => const HomePage()),
-                      );
+
                     } else {
                       _pageController.nextPage(
                         duration: const Duration(milliseconds: 500),

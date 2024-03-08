@@ -58,7 +58,7 @@ class _Page1State extends State<Page1> {
         toolbarHeight: 60.0,
       ),
         body: SingleChildScrollView( // Wrap the Column with SingleChildScrollView
-          padding: EdgeInsets.symmetric(vertical: 130.0, horizontal: 20.0),
+          padding: const EdgeInsets.symmetric(vertical: 130.0, horizontal: 20.0),
           child: Center(
           child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

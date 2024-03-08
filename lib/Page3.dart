@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:project/Notification_service.dart';
+import 'package:project/Onboardhelp.dart';
 import 'package:project/about.dart';
 import 'package:project/terms.dart';
-import 'package:project/help.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'package:provider/provider.dart';
 import 'dark_mode_provider.dart';
+
 
 class Page3 extends StatefulWidget {
   const Page3({super.key});
@@ -188,7 +189,7 @@ class _Page3State extends State<Page3> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const Help()),
+                    MaterialPageRoute(builder: (context) => OnboardingHelp()),
                   );
                 },
               ),
