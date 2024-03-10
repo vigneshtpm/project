@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'dart:async';
 import 'package:just_audio/just_audio.dart';
@@ -29,19 +28,17 @@ class _Page1State extends State<Page1> {
   AudioPlayer audioPlayer = AudioPlayer();
   bool isWorkPhase = false;
   bool isButtonDisabled = false;
-  var foregroundTask = FlutterForegroundTask();
-  bool isForegroundTaskRunning = false;
+  bool isForegroundTaskRunning = true;
 
 
   @override
   void initState(){
-
     notificationService.initNotification();
     notificationService.requestNotificationPermission();
     isWorkPhase = elapsedTime <= kWorkDurationInSeconds;
     super.initState();
-
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -162,31 +159,25 @@ class _Page1State extends State<Page1> {
           if (elapsedTime <= kWorkDurationInSeconds) {
             // Work cycle
             percent = elapsedTime / kWorkDurationInSeconds;
-            if( elapsedTime == kWorkDurationInSeconds)
-            {
+            if (elapsedTime == 1) {
+              showNotification(" Start Work","The work is Started");
               playSound();
             }
-            if (elapsedTime==0){
+            else if (elapsedTime == kWorkDurationInSeconds) {
+              showNotification(" Stop Work","The work is Started");
               playSound();
-
             }
-            else if (elapsedTime==1){
-              showNotification("Start Work", "Enjoy Your Life");
-            }
-            else if (elapsedTime == kWorkDurationInSeconds-1) {
-              showNotification("Stop Work", "Enjoy Your Break Time");
-            }
+            // Add any additional conditions or actions as needed for the work cycle
           } else if (elapsedTime <= kWorkDurationInSeconds + kRestDurationInSeconds) {
-            // Rest cycle
+            // Break cycle
             percent = (elapsedTime - kWorkDurationInSeconds) / kRestDurationInSeconds;
-            if (elapsedTime == kWorkDurationInSeconds+kRestDurationInSeconds){
-              playSound();
-            }
+            // Add any additional conditions or actions as needed for the break cycle
           } else {
             // Timer completed
             resetTimer();
             startTimer();
           }
+
           elapsedTime++;
           isWorkPhase = elapsedTime <= kWorkDurationInSeconds;
         });
