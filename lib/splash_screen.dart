@@ -25,16 +25,13 @@ class _SplashPageState extends State<SplashPage> {
 
     _initializeApp().then((_) {
       Future.delayed(const Duration(seconds: 1), () {
-        _checkOnboardingStatus();
+        _checkOnboardingStatus(context);
       });
     });
   }
-  Future<void> _setOnboardingCompleted() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('onboarding_completed', true);
-  }
 
-  Future<void> _checkOnboardingStatus() async {
+
+  Future<void> _checkOnboardingStatus(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool onboardingCompleted = prefs.getBool('onboarding_completed') ?? false;
 
@@ -46,7 +43,6 @@ class _SplashPageState extends State<SplashPage> {
       );
     } else {
       // Onboarding not completed, navigate to OnboardingView
-      _setOnboardingCompleted();
       Navigator.of(context).pushReplacement(
 
         MaterialPageRoute(
