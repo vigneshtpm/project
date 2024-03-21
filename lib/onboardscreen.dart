@@ -35,26 +35,11 @@ class _OnboardingViewState extends State<OnboardingView> {
   @override
   void initState() {
     super.initState();
-    _checkOnboardingStatus();
+
   }
 
-  Future<void> _checkOnboardingStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool onboardingCompleted = prefs.getBool('onboarding_completed') ?? false;
 
-    if (onboardingCompleted) {
-      // Onboarding already completed, navigate to HomePage
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
-      );
-    }
-  }
 
-  Future<void> _setOnboardingCompleted() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('onboarding_completed', true);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +76,7 @@ class _OnboardingViewState extends State<OnboardingView> {
             right: 20,
             child: ElevatedButton(
               onPressed: () async {
-                await _setOnboardingCompleted();
+
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const HomePage()),
@@ -147,7 +132,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                   onPressed: () {
                     if (_currentPage == imagePaths.length - 1) {
                       // Finish button logic if needed on the last page
-                      _setOnboardingCompleted();
+
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => const HomePage()),

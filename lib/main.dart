@@ -4,8 +4,6 @@ import 'dark_mode_provider.dart';
 import 'splash_screen.dart';
 
 
-
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 

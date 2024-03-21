@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:project/onboardscreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'homepage.dart';
+
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -22,13 +25,35 @@ class _SplashPageState extends State<SplashPage> {
 
     _initializeApp().then((_) {
       Future.delayed(const Duration(seconds: 1), () {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (_) => OnboardingView(),
-          ),
-        );
+        _checkOnboardingStatus();
       });
     });
+  }
+  Future<void> _setOnboardingCompleted() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('onboarding_completed', true);
+  }
+
+  Future<void> _checkOnboardingStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool onboardingCompleted = prefs.getBool('onboarding_completed') ?? false;
+
+    if (onboardingCompleted) {
+      // Onboarding already completed, navigate to HomePage
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
+    } else {
+      // Onboarding not completed, navigate to OnboardingView
+      _setOnboardingCompleted();
+      Navigator.of(context).pushReplacement(
+
+        MaterialPageRoute(
+          builder: (_) => OnboardingView(),
+        ),
+      );
+    }
   }
 
   @override
