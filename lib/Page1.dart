@@ -103,7 +103,11 @@ class _Page1State extends State<Page1> {
       appBar: AppBar(
         title: const Text(
           '20-20-20',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 23.0,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
         backgroundColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,

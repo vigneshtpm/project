@@ -28,6 +28,7 @@ class _UserFuncState extends State<UserFunc> {
   bool isWorkPhase = false;
   bool isButtonDisabled = false;
   bool isForegroundTaskRunning = true;
+  bool isPaused = false;
 
   @override
   void initState() {
@@ -43,6 +44,65 @@ class _UserFuncState extends State<UserFunc> {
   @override
   Widget build(BuildContext context) {
     final darkModeProvider = Provider.of<DarkModeProvider>(context);
+
+    ElevatedButton startButton = ElevatedButton(
+      onPressed: () {
+        if (isPaused) {
+          startTimer(); // Resume timer
+          setState(() {
+            isPaused = false;
+          });
+        } else {
+          startTimer();
+          setState(() {
+            isButtonDisabled = true;
+          });
+        }
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.green,
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 34),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        elevation: 5,
+      ),
+      child: const Text(
+        "Start",
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 17,
+        ),
+      ),
+    );
+
+    ElevatedButton pauseButton = ElevatedButton(
+      onPressed: () {
+        pauseTimer();
+        setState(() {
+          isPaused = true;
+          isButtonDisabled = false; // Enable the start button when paused
+        });
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.orangeAccent, // Change color to yellow for pause button
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 34),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+          //side: const BorderSide(color: Colors.white, width: 0),
+        ),
+        elevation: 8,
+        shadowColor: Colors.grey,
+      ),
+      child: const Text(
+        "Pause",
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 17,
+        ),
+      ),
+    );
+
     return Scaffold(
       backgroundColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
       appBar: AppBar(
@@ -63,8 +123,7 @@ class _UserFuncState extends State<UserFunc> {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 130.0, horizontal: 20.0),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -95,35 +154,19 @@ class _UserFuncState extends State<UserFunc> {
                     color: darkModeProvider.darkModeEnabled ? Colors.white : Colors.white,
                   ),
                 ),
+                footer: const Text(
+                  "",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+                ),
                 circularStrokeCap: CircularStrokeCap.round,
                 backgroundColor: Colors.white,
                 progressColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
               ),
               const SizedBox(height: 20),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton(
-                    onPressed: isButtonDisabled ? null : () {
-                      startTimer();
-                      setState(() {
-                        isButtonDisabled = true;
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 34),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      elevation: 5,
-                    ),
-                    child: const Text(
-                      "Start",
-                      style: TextStyle(color: Colors.white, fontSize: 17,),
-                    ),
-                  ),
+                  isRunning ? pauseButton : startButton,
                   const SizedBox(width: 20),
                   ElevatedButton(
                     onPressed: () {
@@ -137,12 +180,13 @@ class _UserFuncState extends State<UserFunc> {
                       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 34),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
+                        //side: const BorderSide(color: Colors.white, width: 0),
                       ),
                       elevation: 5,
                     ),
                     child: const Text(
                       "Stop",
-                      style: TextStyle(color: Colors.white, fontSize: 17,),
+                      style: TextStyle(color: Colors.white, fontSize: 17),
                     ),
                   ),
                 ],
@@ -153,6 +197,7 @@ class _UserFuncState extends State<UserFunc> {
       ),
     );
   }
+
 
   void showNotification(String title, String body) {
     notificationService.showNotification(title: title, body: body);
@@ -201,6 +246,12 @@ class _UserFuncState extends State<UserFunc> {
     });
   }
 
+  void pauseTimer() {
+    if (isRunning) {
+      timer?.cancel();
+      isRunning = false;
+    }
+  }
   void stopTimer() {
     if (isRunning) {
       timer?.cancel();

@@ -41,6 +41,12 @@ class AboutUsPage extends StatelessWidget {
               ),
               SizedBox(height: 10.0),
               Text(
+                'Qualification : MCA',
+                style: TextStyle(fontSize: 18.0, color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 10.0),
+              Text(
                 'Purpose: Mini-Project',
                 style: TextStyle(fontSize: 18.0, color: Colors.white),
                 textAlign: TextAlign.center,

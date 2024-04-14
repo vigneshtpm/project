@@ -1,9 +1,6 @@
-// terms_and_conditions.dart
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dark_mode_provider.dart';
-
 
 class Terms extends StatelessWidget {
   @override
@@ -56,18 +53,15 @@ class Terms extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10.0),
-              buildBulletPoint(' Frequency: Commit to following the 20-20-20 rule consistently throughout your screen time.'),
-              buildBulletPoint(' Reminders: Set alarms or use reminder apps to prompt you to take breaks every 20 minutes.'),
-              buildBulletPoint(' Compliance: Make a conscious effort to adhere to the rule, acknowledging its importance in preventing eye strain.'),
-              buildBulletPoint(' Duration: Ensure that you take a break for at least 20 seconds, looking at something 20 feet away to allow your eyes to relax.'),
-              buildBulletPoint(' Environment: Choose a point of focus during your break that is approximately 20 feet away to maximize the benefits of the rule.'),
-              buildBulletPoint(' Consistency: Apply the 20-20-20 rule across various devices, such as computers, tablets, and smartphones.'),
-              buildBulletPoint(' Adjustments: Modify the rule based on your specific needs, considering factors like the nature of your work, screen brightness, and ambient lighting.'),
+              buildBulletPoint(' The Eyes 20 app is exclusive to Android users.'),
+              buildBulletPoint(' After the Eyes 20 app launches and your smartphone enters sleep mode, counting stops. Your mobile device\'s open countdown will then start on its own.'),
+              buildBulletPoint(' The primary page of this application adheres to the 20/20/20 rule.'),
+              buildBulletPoint(' The following page is Customize your work schedule and downtime.'),
+              buildBulletPoint(' From the user\'s perspective, enabling dark mode on the page.'),
+              buildBulletPoint(' Alert alerts and readings on eye care were also utilized by this app.'),
+              buildBulletPoint(' The Eyes 20 app launches and terminates. Play sound for a brief moment, push notifications, or check the reach time.'),
+              buildBulletPoint('This treatment lessens tension, headache discomfort, dry eyes, and eye strain.'),
               const SizedBox(height: 20.0),
-              const Text(
-                'Remember, the 20-20-20 rule is a guideline rather than a strict set of terms and conditions. Adjust it to suit your individual preferences and work habits, but the key is to incorporate regular breaks to alleviate eye strain associated with prolonged screen use.',
-                style: TextStyle(fontSize: 18.0, color: Colors.white),
-              ),
             ],
           ),
         ),

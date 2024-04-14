@@ -25,7 +25,11 @@ class _Page2State extends State<Page2> {
       appBar: AppBar(
         title: const Text(
           'Customize',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 23.0,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
         backgroundColor: darkModeProvider.darkModeEnabled ? Colors.black : Colors.blueAccent,
@@ -111,13 +115,17 @@ class _Page2State extends State<Page2> {
         children: [
           Text(
             label,
-            style: TextStyle(color: Colors.white, fontSize: 18),
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 22.0,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 10),
           Container(
             decoration: BoxDecoration(
               border: Border.all(color: Colors.white, width: 2),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(30),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -170,13 +178,17 @@ class _Page2State extends State<Page2> {
         children: [
           Text(
             label,
-            style: TextStyle(color: Colors.white, fontSize: 18),
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 22.0,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 10),
           Container(
             decoration: BoxDecoration(
               border: Border.all(color: Colors.white, width: 2),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(30),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
