@@ -205,7 +205,7 @@ class _Page1State extends State<Page1> {
               showNotification(" Start Work", "The work is Started");
               playSound();
             } else if (elapsedTime == kWorkDurationInSeconds) {
-              showNotification(" Stop Work", "The work is Started");
+              showNotification(" Stop Work", "Enjoy Your Break Time");
               playSound();
             }
             // Add any additional conditions or actions as needed for the work cycle

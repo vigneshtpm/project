@@ -215,7 +215,7 @@ class _UserFuncState extends State<UserFunc> {
               playSound();
             }
             else if (elapsedTime == convertedWorkTime) {
-              showNotification(" Stop Work","The work is Started");
+              showNotification(" Stop Work","Enjoy Your Break Time");
               playSound();
             }
             // Add any additional conditions or actions as needed for the work cycle

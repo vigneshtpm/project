@@ -11,7 +11,7 @@ class NotificationService {
     await requestNotificationPermission();
 
     const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('eye_logo');
+    AndroidInitializationSettings('logo2');
 
     const InitializationSettings initializationSettings =
     InitializationSettings(android: initializationSettingsAndroid);
